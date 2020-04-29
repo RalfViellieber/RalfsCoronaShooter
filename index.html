@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ralfs Corona-Shooter</title>
+    <meta name="description" content="Ralfs Corona-Shooter">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <link href="index.css" rel="stylesheet">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-sprite-particles-component@^0.5.0/aframe-sprite-particles-component.js"></script>
+    <script src="https://rawgit.com/takahirox/aframe-rain/master/build/aframe-rain.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="./vendor/howler.min.js"></script>
+    <script src="./components/play-tracks.js"></script>
+    <script src="./components/makevirus.js"></script>
+    <script src="./components/gamestate.js"></script>
+    <script src="./components/backonclick.js"></script>
+    <script src="./components/win-lose.js"></script>
+    <script src="./components/utils.js"></script>
+
+    <script>
+      var bad_hits = -1; // count backwards virus hitting nose
+      var you_did_it; // audio tracks, loaded with howler
+      var you_died;
+      var husten1;
+      var husten2;
+      var husten3;
+      var jazzt1;
+      var jazzt2;
+      var jazzt3;
+      var sound_bad_hit;
+      var sound_fall;
+      var wscream;
+      var soundgewitter;
+    </script>
+  </head>
+  <body>
+    <a-scene loading-screen="dotsColor: red; backgroundColor: black" play-tracks makevirus win-lose gamestate>
+    <a-assets>
+      <a-asset-item id="wforest" src="sky_pano_winterforest/scene.gltf"></a-asset-item>
+      <a-asset-item id="corona" src="coronavirus/scene.gltf"></a-asset-item>
+      <!-- mixin=group of attributes -->
+      <a-mixin id="light"
+        geometry="primitive: sphere; radius: 0.01"
+        material="color: #111; shader: flat"
+        light="color: #DDDDFF; distance: 120; intensity: 1; type: point">
+      </a-mixin>
+
+      <a-mixin id="orbit"
+        animation="property: rotation; loop: true; to: 0 360 0; dur: 40000; easing: linear;">
+      </a-mixin>
+      <a-mixin id="font"
+        text="font: fonts/Viga-Regular.json; shader: msdf; letterSpacing: 1.5">
+      </a-mixin>
+
+      <img id="logoImg" src="images/Coronashooter.png">
+
+      <audio id="sound_back" src="./audio/voegelzwitschern.mp3" preload="auto"></audio>
+      <audio id="sound_pusten" src="./audio/pusten.mp3" preload="auto"></audio>
+      <audio id="sound_virus" src="./audio/soundm2_virus.mp3" preload="auto"></audio>
+    </a-assets>
+    <a-entity id="introMusic" sound="src: #sound_back; loop: true; positional: false; autoplay: true" sound-fade></a-entity>
+
+    <a-gltf-model id="mwforest" src="#wforest" rotation="0 90 0" scale="1 1 1"></a-gltf-model>
+
+    <a-entity animation="property: rotation; to: 60 360 0; dur: 80000; easing: linear; loop: true">
+      <a-entity mixin="light" position="60 0 0">
+      </a-entity>
+    </a-entity>
+    <!-- ambient light for dark areas effects only objects (virus) -->
+    <a-light id="ambientlight" type="ambient" color="#445451"></a-light>
+
+    <a-image id="alogo" src="#logoImg" height="2.6" width="4.6" position="0 5 -6"></a-image>
+
+    <a-plane
+      id="instruction" height= "1.8" width="3.5" position="0 2.6 -6" color="#AAF"
+      sound="src:#sound_pusten; autoplay: false; loop: false; volume: 1; on: click"
+      class="clickable"
+      startgame
+      mixin="font"
+      text="color: #4ef580; width: 4.5; wrapCount: 45; xOffset: 0.1; zOffset: 0.01; value: Survice the corona pandamic.\nStay home, Stay safe - Shoot virus!\nSTART; align: center"
+      animation__scale="property: scale; from: 1 1 1; to: 0 0 0; dur: 1550; delay: 1.0; startEvents: startgame"
+      >
+    </a-plane>
+    <a-entity id="itsme" position="0 0 0">
+      <a-entity camera wasd-controls oculus-go-controls look-controls position="0 1.6 0">
+        <a-entity id="counthits" position="-0.1 -0.15 -0.5" rotation="0 0 0"
+            mixin="font"
+            text="color: #4ef580; width: 0.15; wrapCount: 4; zOffset: 0.1; value: 10"
+            opacity= "0.3"
+          >
+        </a-entity>
+        <a-entity id="playtime" position="0.2 -0.15 -0.5" rotation="0 0 0"
+            mixin="font"
+            text="color: #b8f1fc; width: 0.15; wrapCount: 4; zOffset: 0.1; value: 0"
+            opacity= "0.3"
+          >
+        </a-entity>
+      </a-entity>
+      <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .clickable; far: 18;" line="opacity:0.5; color: #6699ff" pointer></a-entity>
+      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable; far: 18;" line="opacity:0.5; color: #6699ff" pointer></a-entity>
+    </a-entity>
+    </a-scene>
+  </body>
+</html>
