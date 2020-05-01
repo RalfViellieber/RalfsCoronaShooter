@@ -4,6 +4,8 @@ Ralfs Corona-Shooter is an web-based VR game.
 Blow away the virus for 130 seconds to survive the pandamic.  
 Stay home, Stay safe - Shoot virus!  
 
+![Ralfs Corona-Shooter](images/example_cshooter.jpg?raw=true "Ralfs Corona-Shooter")
+
 ## Technology
 
 Ralfs Corona-Shooter is built with [aframe](https://aframe.io) and [howler.js](https://https://howlerjs.com/).
