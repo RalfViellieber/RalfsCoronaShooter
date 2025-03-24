@@ -30,9 +30,9 @@ You can view the site in a browser with [inspector](https://github.com/aframevr/
 ## View/Play
 
 Visit for  
-Oculus Go version https://ralfviellieber.github.io/RalfsCoronaShooter/index.html  
+Oculus Go/Quest3 version https://ralfviellieber.github.io/RalfsCoronaShooter/index.html  
 Cardboard version https://ralfviellieber.github.io/RalfsCoronaShooter/indexcb.html  
-Oculus Go version https://ralfviellieber.github.io/RalfsCoronaShooter/indexla.html (just for fun - other scene)
+Oculus Go/Quest3 version https://ralfviellieber.github.io/RalfsCoronaShooter/indexla.html (just for fun - other scene)
 
 
 ## LICENSE
